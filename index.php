@@ -17,6 +17,16 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
     </style>
+     <script>
+        // Memeriksa status login saat halaman ini diakses
+        window.onload = function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn'); // Cek status login
+
+            if (isLoggedIn !== 'true') {
+                window.location.href = 'login.php'; // Arahkan ke halaman login jika belum login
+            }
+        };
+    </script>
 </head>
 <body class="min-h-screen flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden">

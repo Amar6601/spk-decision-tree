@@ -1,5 +1,7 @@
 <?php
-echo "<h1>Keluar</h1>";
-echo "<p>Anda telah keluar dari sistem.</p>";
+// Menghapus status login dari localStorage
+echo "<script>
+    localStorage.removeItem('isLoggedIn'); // Menghapus status login
+    window.location.href = 'login.php'; // Arahkan ke halaman login
+</script>";
 ?>
-<a href="../index.php" style="text-decoration: none; color: #4CAF50;">Kembali ke Menu Utama</a>

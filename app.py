@@ -1,35 +1,32 @@
-from flask import Flask, request, jsonify
-import joblib
-import numpy as np
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Memuat model
-model = joblib.load('decision_tree_model.pkl')
+def tentukan_kategori(nilai_akhir):
+    if nilai_akhir >= 85:
+        return "Sangat Baik"
+    elif nilai_akhir >= 70:
+        return "Baik"
+    elif nilai_akhir >= 50:
+        return "Cukup"
+    else:
+        return "Kurang"
 
 @app.route('/classify', methods=['POST'])
 def classify():
     data = request.get_json()
     
-    # Pastikan semua data yang diperlukan ada
     if not all(key in data for key in ['absensi', 'pengetahuan', 'disiplin', 'perilaku']):
         return jsonify({'error': 'Data tidak lengkap'}), 400
 
-    absensi = data['absensi']
-    pengetahuan = data['pengetahuan']
-    disiplin = data['disiplin']
-    perilaku = data['perilaku']
+    # Hitung nilai akhir
+    nilai_akhir = calculateFinalScore(data['absensi'], data['pengetahuan'], data['disiplin'], data['perilaku'])
+    kategori = tentukan_kategori(nilai_akhir)
 
-    # Buat array untuk prediksi
-    input_data = np.array([[absensi, pengetahuan, disiplin, perilaku]])
-    
-    try:
-        prediction = model.predict(input_data)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    return jsonify({'kategori': kategori})
 
-    # Mengembalikan kategori sebagai respons
-    return jsonify({'kategori': prediction[0]})
+def calculateFinalScore(absensi, pengetahuan, disiplin, perilaku):
+    return (absensi * 0.4) + (pengetahuan * 0.3) + (disiplin * 0.2) + (perilaku * 0.1)
 
 if __name__ == '__main__':
     app.run(port=5000)

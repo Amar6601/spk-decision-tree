@@ -132,17 +132,21 @@
     </div>
 
     <script>
-        function validateForm() {
-            var usernameEmail = document.getElementById('username_email').value;
-            var password = document.getElementById('password').value;
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Mencegah pengiriman form
 
-            if (usernameEmail.trim() === '' || password.trim() === '') {
-                alert('Username atau Email dan password harus diisi.');
-                return false;
+            // Simulasi login (ganti dengan logika autentikasi yang sesuai)
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Cek username dan password (ganti dengan logika yang sesuai)
+            if (username === 'admin' && password === 'password') {
+                localStorage.setItem('isLoggedIn', 'true'); // Set status login
+                window.location.href = 'index.php'; // Arahkan ke halaman utama
+            } else {
+                alert('Username atau password salah!');
             }
-
-            return true;
-        }
+        });
 
         function handleFormSubmit(event) {
             if (validateForm()) {

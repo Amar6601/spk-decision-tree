@@ -36,7 +36,7 @@ function classifyEmployee($absensi, $pengetahuan, $disiplin, $perilaku) {
     }
 
     // Debugging: Tampilkan respons API
-    echo "<pre>Respons API: " . htmlspecialchars($response) . "</pre>"; // Menampilkan respons API
+    // Menampilkan respons API
 
     $responseData = json_decode($response, true);
     
