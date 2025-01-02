@@ -1,3 +1,13 @@
+<?php
+session_start();
+// Periksa apakah pengguna sudah login
+if (!isset($_SESSION['isLoggedIn']) || $_SESSION['isLoggedIn'] !== true) {
+    // Jika belum login, arahkan ke halaman login
+    header('Location: login.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +74,7 @@
                 <h3 class="font-semibold text-red-800">Pengaturan Akun</h3>
             </a>
             
-            <a href="login.php" class="menu-item bg-gray-100 rounded-xl p-6 text-center hover:bg-gray-200 transition duration-300">
+            <a href="logout.php" class="menu-item bg-gray-100 rounded-xl p-6 text-center hover:bg-gray-200 transition duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>

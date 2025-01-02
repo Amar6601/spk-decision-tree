@@ -2,7 +2,8 @@
 include 'db_connection.php'; // Menyertakan file koneksi
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'login') {
-    $username_email = $_POST['username_email'];
+    session_start(); // Pastikan session dimulai di awal
+    $username_email = trim($_POST['username_email']);
     $password = $_POST['password'];
 
     // Mencari pengguna berdasarkan username atau email
@@ -16,18 +17,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         // Verifikasi password (pastikan password di-hash saat pendaftaran)
         if (password_verify($password, $row['password'])) {
             // Login berhasil
-            session_start();
             $_SESSION['user_id'] = $row['id'];
-            header("Location: index.php"); // Arahkan ke halaman dashboard
+            $_SESSION['isLoggedIn'] = true; // Tandai sebagai login
+            header("Location: index.php"); // Arahkan ke halaman utama
             exit();
         } else {
-            echo "Password salah.";
+            $_SESSION['error'] = "Password salah.";
         }
     } else {
-        echo "Pengguna tidak ditemukan.";
+        $_SESSION['error'] = "Pengguna tidak ditemukan.";
     }
 
     $stmt->close();
+    $conn->close();
+
+    // Kembali ke login.php dengan error
+    header("Location: login.php");
+    exit();
 }
-$conn->close();
 ?>

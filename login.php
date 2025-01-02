@@ -1,3 +1,19 @@
+<?php
+session_start();
+
+// Jika pengguna sudah login, arahkan ke halaman utama
+if (isset($_SESSION['isLoggedIn']) && $_SESSION['isLoggedIn'] === true) {
+    header('Location: index.php');
+    exit();
+}
+$error = '';
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']); // Hapus error setelah ditampilkan
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,7 +129,10 @@
 <body>
     <div class="container animate__animated">
         <h1>Login</h1>
-        <form action="authenticate.php" method="POST" onsubmit="return handleFormSubmit(event)">
+        <?php if ($error): ?>
+            <div style="color: red;"><?php echo htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+        <form action="authenticate.php" method="POST"">
             <input type="hidden" name="action" value="login">
             <label for="username_email">Username atau Email:</label>
             <input type="text" id="username_email" name="username_email" required>
@@ -130,36 +149,7 @@
             Belum punya akun? <a href="register.php">Daftar di sini</a>
         </div>
     </div>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Mencegah pengiriman form
-
-            // Simulasi login (ganti dengan logika autentikasi yang sesuai)
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Cek username dan password (ganti dengan logika yang sesuai)
-            if (username === 'admin' && password === 'password') {
-                localStorage.setItem('isLoggedIn', 'true'); // Set status login
-                window.location.href = 'index.php'; // Arahkan ke halaman utama
-            } else {
-                alert('Username atau password salah!');
-            }
-        });
-
-        function handleFormSubmit(event) {
-            if (validateForm()) {
-                event.preventDefault();
-                var container = document.querySelector('.container');
-                container.classList.add('fadeOut');
-                setTimeout(() => {
-                    event.target.submit();
-                }, 1000); // Durasi animasi sesuai dengan slideOut
-            } else {
-                event.preventDefault();
-            }
-        }
-    </script>
 </body>
 </html>
+
+
